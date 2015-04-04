@@ -2,6 +2,7 @@ package com.da.MonsterCrusade.entities;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import com.da.MonsterCrusade.entities.components.Speed;
 
 /**
@@ -12,13 +13,13 @@ public class Hero {
     private int x;
     private int y;
     private boolean touched;
-    private Speed speed;
+    private double speed;
 
     public Hero(Bitmap bitmap, int x, int y) {
         this.bitmap = bitmap;
         this.x = x;
         this.y = y;
-        speed = new Speed();
+        speed = 1 / 10.0;
     }
 
     public Bitmap getBitmap() {
@@ -53,10 +54,6 @@ public class Hero {
         this.touched = touched;
     }
 
-    public Speed getSpeed() {
-        return speed;
-    }
-
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2), y - (bitmap.getHeight() / 2), null);
     }
@@ -66,10 +63,10 @@ public class Hero {
                 eventY >= (y - bitmap.getHeight() / 2) && (eventY <= (y + bitmap.getHeight() / 2)));
     }
 
-    public void update() {
-        if(!touched){
-            x += (speed.getXv() * speed.getxDirection());
-            y += (speed.getYv() * speed.getyDirection());
-        }
+    public void goWithCost(double costX, double costY) {
+        x += costX * speed;
+        y += costY * speed;
     }
+
+
 }

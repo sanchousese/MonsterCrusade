@@ -12,7 +12,7 @@ public class MainThread extends Thread {
 
     private static final String TAG = MainThread.class.getSimpleName();
 
-    private static final int MAX_FPS = 50;
+    private static final int MAX_FPS = 20;
     private static final int MAX_FRAMES_SKIPS = 5;
     private static final int FRAME_PERIOD = 1000 / MAX_FPS;
 
@@ -44,7 +44,6 @@ public class MainThread extends Thread {
                 synchronized (surfaceHolder) {
                     beginTime = System.currentTimeMillis();
                     frameSkipped = 0;
-                    gamePanel.update();
                     gamePanel.onDraw(canvas);
 
                     timeDiff = System.currentTimeMillis() - beginTime;
@@ -57,7 +56,6 @@ public class MainThread extends Thread {
                     }
 
                     while (sleepTime < 0 && frameSkipped < MAX_FRAMES_SKIPS) {
-                        gamePanel.update();
                         sleepTime += FRAME_PERIOD;
                         frameSkipped++;
                     }
