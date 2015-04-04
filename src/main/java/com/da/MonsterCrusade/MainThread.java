@@ -1,5 +1,7 @@
 package com.da.MonsterCrusade;
 
+import android.annotation.SuppressLint;
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -10,24 +12,62 @@ public class MainThread extends Thread {
 
     private static final String TAG = MainThread.class.getSimpleName();
 
+    private static final int MAX_FPS = 50;
+    private static final int MAX_FRAMES_SKIPS = 5;
+    private static final int FRAME_PERIOD = 1000 / MAX_FPS;
+
     private SurfaceHolder surfaceHolder;
-    private MainGamePanel mainGamePanel;
+    private MainGamePanel gamePanel;
     private static boolean running;
 
-    public MainThread(SurfaceHolder surfaceHolder, MainGamePanel mainGamePanel) {
+    public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
         super();
         this.surfaceHolder = surfaceHolder;
-        this.mainGamePanel = mainGamePanel;
+        this.gamePanel = gamePanel;
     }
 
+    @SuppressLint("WrongCall")
     @Override
     public void run() {
-        long tickCount = 0L;
+        Canvas canvas;
         Log.d(TAG, "Starting game loop");
-        while (running){
-            tickCount++;
+
+        long beginTime;
+        long timeDiff;
+        int sleepTime = 0;
+        int frameSkipped;
+
+        while (running) {
+            canvas = null;
+            try {
+                canvas = surfaceHolder.lockCanvas();
+                synchronized (surfaceHolder) {
+                    beginTime = System.currentTimeMillis();
+                    frameSkipped = 0;
+                    gamePanel.update();
+                    gamePanel.onDraw(canvas);
+
+                    timeDiff = System.currentTimeMillis() - beginTime;
+                    sleepTime = (int) (FRAME_PERIOD - timeDiff);
+
+                    if (sleepTime > 0) {
+                        try {
+                            Thread.sleep(sleepTime);
+                        } catch (InterruptedException e) {}
+                    }
+
+                    while (sleepTime < 0 && frameSkipped < MAX_FRAMES_SKIPS) {
+                        gamePanel.update();
+                        sleepTime += FRAME_PERIOD;
+                        frameSkipped++;
+                    }
+                }
+            } finally {
+                if (canvas != null) {
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
+            }
         }
-        Log.d(TAG, "Game loop executed " + tickCount + " times");
     }
 
     public static void setRunning(boolean running) {
