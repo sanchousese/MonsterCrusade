@@ -1,6 +1,5 @@
 package com.da.MonsterCrusade;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,8 +7,8 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.da.MonsterCrusade.controls.JoystickView;
 import com.da.MonsterCrusade.entities.Hero;
-import com.da.MonsterCrusade.entities.components.Speed;
 
 /**
  * Created by sancho on 04.04.15.

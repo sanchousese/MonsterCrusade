@@ -1,4 +1,4 @@
-package com.da.MonsterCrusade;
+package com.da.MonsterCrusade.controls;
 
 import android.content.Context;
 import android.graphics.Canvas;

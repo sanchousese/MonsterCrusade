@@ -1,11 +1,11 @@
 package com.da.MonsterCrusade;
 
 import android.app.Activity;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import com.da.MonsterCrusade.controls.JoystickView;
 
 public class MonsterCrusadeActivity extends Activity {
 

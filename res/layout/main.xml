@@ -16,7 +16,7 @@
     <view
             android:layout_width="150dp"
             android:layout_height="150dp"
-            class="com.da.MonsterCrusade.JoystickView"
+            class="com.da.MonsterCrusade.controls.JoystickView"
             android:id="@+id/joystickView"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"

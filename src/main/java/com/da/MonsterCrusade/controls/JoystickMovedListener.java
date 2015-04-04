@@ -1,4 +1,4 @@
-package com.da.MonsterCrusade;
+package com.da.MonsterCrusade.controls;
 
 /**
  * Created by sancho on 04.04.15.
