@@ -6,6 +6,7 @@ import android.util.Log;
 import com.da.MonsterCrusade.R;
 import com.da.MonsterCrusade.actors.Actor;
 import com.da.MonsterCrusade.utils.BitmapTransformer;
+import com.da.MonsterCrusade.utils.Rectangle;
 
 /**
  * Created by ihorkroosh on 4/5/15.
@@ -40,7 +41,9 @@ public class Fireball implements Bullet {
 
     @Override
     public boolean hasIntersection(Actor actor) {
-        return false;
+        Rect imageRect = Rectangle.getRect(x, y, IMAGE_SIZE);
+        Rect actorRect = Rectangle.getRect(actor.getPosition().x, actor.getPosition().y, actor.getImageSize());
+        return Rect.intersects(imageRect, actorRect);
     }
 
     @Override
@@ -55,6 +58,11 @@ public class Fireball implements Bullet {
 
     public void setAngle(double angle) {
         this.angle = angle;
+    }
+
+    @Override
+    public int getDamage() {
+        return DAMAGE;
     }
 
 

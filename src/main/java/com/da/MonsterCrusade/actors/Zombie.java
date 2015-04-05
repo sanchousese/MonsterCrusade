@@ -59,6 +59,11 @@ public class Zombie implements Actor, Monster {
     }
 
     @Override
+    public int getImageSize() {
+        return IMAGE_SIZE;
+    }
+
+    @Override
     public Bullet shoot(Point position, double angle, Context context) {
         return weapon.shoot(angle, position, context);
     }

@@ -2,6 +2,7 @@ package com.da.MonsterCrusade.bullets;
 
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.Rect;
 import com.da.MonsterCrusade.actors.Actor;
 
 /**
@@ -15,4 +16,6 @@ public interface Bullet {
     void setPosition(Point position);
 
     void setAngle(double angle);
+
+    int getDamage();
 }
