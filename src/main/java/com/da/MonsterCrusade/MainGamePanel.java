@@ -4,11 +4,16 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.da.MonsterCrusade.bullets.Bullet;
 import com.da.MonsterCrusade.controls.JoystickView;
 import com.da.MonsterCrusade.entities.Hero;
+import com.da.MonsterCrusade.utils.DisplayInfo;
+
+import java.util.LinkedList;
 
 /**
  * Created by sancho on 04.04.15.
@@ -20,15 +25,23 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private MainThread mainThread;
     public static JoystickView joystickView;
+    public static JoystickView angleView;
+    private Point screenSize;
+    private LinkedList<Bullet> bullets;
+    private static final long SHOOT_DELAY = 300L;
+    private long lastShootTime;
 
     public MainGamePanel(Context context) {
         super(context);
 
         getHolder().addCallback(this);
-        hero = new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.droid_1), 50, 50);
+        hero = new Hero(DisplayInfo.getSize(context).x / 2, DisplayInfo.getSize(context).y / 2, 0, context);
         mainThread = new MainThread(getHolder(), this);
 
+        screenSize = DisplayInfo.getSize(context);
         setFocusable(true);
+        bullets = new LinkedList<Bullet>();
+        lastShootTime = System.currentTimeMillis();
     }
 
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -62,6 +75,18 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         super.onDraw(canvas);
         canvas.drawColor(Color.BLACK);
         hero.goWithCost(joystickView.getTouchX(), joystickView.getTouchY());
+        hero.turnOnAngle(Math.atan2((double)angleView.getTouchX(), (double)angleView.getTouchY()));
+        if(System.currentTimeMillis() - lastShootTime > SHOOT_DELAY) {
+            bullets.add(hero.shoot());
+            lastShootTime = System.currentTimeMillis();
+        }
+
         hero.draw(canvas);
+
+        for(Bullet bullet: bullets) {
+            bullet.draw(canvas);
+        }
     }
+
+
 }

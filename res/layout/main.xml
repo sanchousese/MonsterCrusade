@@ -17,12 +17,17 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             class="com.da.MonsterCrusade.controls.JoystickView"
-            android:id="@+id/joystickView"
+            android:id="@+id/moveView"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"/>
+    <view android:layout_width="150dp"
+          android:layout_height="150dp"
+          class="com.da.MonsterCrusade.controls.JoystickView" android:id="@+id/angleView"
+          android:layout_alignTop="@+id/moveView" android:layout_alignParentRight="true"
+          android:layout_marginRight="15dp"/>
 
 </RelativeLayout>
 

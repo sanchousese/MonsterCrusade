@@ -17,7 +17,8 @@ public class MonsterCrusadeActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.main);
-        MainGamePanel.joystickView = (JoystickView) findViewById(R.id.joystickView);
+        MainGamePanel.joystickView = (JoystickView) findViewById(R.id.moveView);
+        MainGamePanel.angleView = (JoystickView) findViewById(R.id.angleView);
         Log.d(TAG, "View added");
     }
 
