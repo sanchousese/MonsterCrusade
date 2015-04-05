@@ -1,7 +1,6 @@
 package com.da.MonsterCrusade;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -75,8 +74,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         super.onDraw(canvas);
         canvas.drawColor(Color.BLACK);
         hero.goWithCost(joystickView.getTouchX(), joystickView.getTouchY());
-        hero.turnOnAngle(Math.atan2((double)angleView.getTouchX(), (double)angleView.getTouchY()));
+        hero.turnOnAngle(Math.atan2(angleView.getTouchX(), angleView.getTouchY()));
         if(System.currentTimeMillis() - lastShootTime > SHOOT_DELAY) {
+            if(bullets.size() > 5)
+                bullets.removeFirst();
             bullets.add(hero.shoot());
             lastShootTime = System.currentTimeMillis();
         }
