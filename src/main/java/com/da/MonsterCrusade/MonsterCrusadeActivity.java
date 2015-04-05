@@ -3,6 +3,8 @@ package com.da.MonsterCrusade;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import com.da.MonsterCrusade.controls.JoystickView;
@@ -10,6 +12,8 @@ import com.da.MonsterCrusade.controls.JoystickView;
 public class MonsterCrusadeActivity extends Activity {
 
     private static final String TAG = MonsterCrusadeActivity.class.getSimpleName();
+
+    private SurfaceView surfaceView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,6 +23,7 @@ public class MonsterCrusadeActivity extends Activity {
         setContentView(R.layout.main);
         MainGamePanel.joystickView = (JoystickView) findViewById(R.id.moveView);
         MainGamePanel.angleView = (JoystickView) findViewById(R.id.angleView);
+        surfaceView = (SurfaceView) findViewById(R.id.screenFragment);
         Log.d(TAG, "View added");
     }
 
