@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.util.Log;
 import com.da.MonsterCrusade.R;
 import com.da.MonsterCrusade.actors.Actor;
+import com.da.MonsterCrusade.utils.BitmapTransformer;
 
 /**
  * Created by ihorkroosh on 4/5/15.
@@ -16,6 +17,7 @@ public class Fireball implements Bullet {
     private final static String TAG = Fireball.class.getSimpleName();
     private final static int DAMAGE = 10;
     private final static int SPEED = 15;
+    private final static int IMAGE_SIZE = 20;
     private final Bitmap IMAGE;
     private Point position;
     private double angle;
@@ -24,7 +26,8 @@ public class Fireball implements Bullet {
         this.position = position;
         this.angle = angle;
 
-        IMAGE = BitmapFactory.decodeResource(context.getResources(), R.drawable.fireball);
+        Bitmap temp = BitmapFactory.decodeResource(context.getResources(), R.drawable.fireball);
+        IMAGE = BitmapTransformer.getResizedBitmap(temp, IMAGE_SIZE, IMAGE_SIZE);
     }
 
     @Override
@@ -41,7 +44,7 @@ public class Fireball implements Bullet {
     private void nextPosition() {
         Log.d(TAG, toString());
         position.x +=  Math.cos(angle) * SPEED;
-        position.y +=  Math.sin(angle) * SPEED;
+        position.y -=  Math.sin(angle) * SPEED;
     }
 
     @Override

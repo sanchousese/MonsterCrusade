@@ -15,4 +15,9 @@ public class ScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return new MainGamePanel(getActivity());
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }
