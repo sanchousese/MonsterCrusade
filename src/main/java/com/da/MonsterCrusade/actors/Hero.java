@@ -35,7 +35,9 @@ public class Hero {
 
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(IMAGE, x - (IMAGE.getWidth() / 2), y - (IMAGE.getHeight() / 2), null);
+        float rotateAngle = (float) (angle * 180 / Math.PI);
+        Bitmap bitmap = BitmapTransformer.rotateBitmap(IMAGE, 180-rotateAngle);
+        canvas.drawBitmap(bitmap, x, y, null);
     }
 
     public Bullet shoot() {

@@ -1,10 +1,7 @@
 package com.da.MonsterCrusade.bullets;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Point;
+import android.graphics.*;
 import android.util.Log;
 import com.da.MonsterCrusade.R;
 import com.da.MonsterCrusade.actors.Actor;
@@ -16,8 +13,8 @@ import com.da.MonsterCrusade.utils.BitmapTransformer;
 public class Fireball implements Bullet {
     private final static String TAG = Fireball.class.getSimpleName();
     private final static int DAMAGE = 10;
-    private final static int SPEED = 15;
-    private final static int IMAGE_SIZE = 20;
+    private final static int SPEED = 25;
+    private final static int IMAGE_SIZE = 40;
     private final Bitmap IMAGE;
     private Point position;
     private double angle;
@@ -33,7 +30,9 @@ public class Fireball implements Bullet {
     @Override
     public void draw(Canvas canvas) {
         nextPosition();
-        canvas.drawBitmap(IMAGE, position.x, position.y, null);
+        float rotateAngle = (float) (angle * 180 / Math.PI);
+        Bitmap bitmap = BitmapTransformer.rotateBitmap(IMAGE, -rotateAngle);
+        canvas.drawBitmap(bitmap, position.x, position.y, null);
     }
 
     @Override
