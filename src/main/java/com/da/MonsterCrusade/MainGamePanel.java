@@ -36,7 +36,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private ArrayList<Bullet> bullets;
     private ArrayList<Monster> monsters;
     private static final long SHOOT_DELAY = 300L;
+    private static final long MONSTERS_APPEARING_DELAY = 3000L;
     private long lastShootTime;
+    private long monstersAppearingTime;
 
     public MainGamePanel(Context context) {
         super(context);
@@ -48,9 +50,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
         bullets = new ArrayList<Bullet>();
         monsters = new ArrayList<Monster>();
-
-        monsters.add(Zombie.generate(context));
-        monsters.add(Zombie.generate(context));
 
         lastShootTime = System.currentTimeMillis();
     }
@@ -105,6 +104,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         hero.goWithCost(joystickView.getTouchX(), joystickView.getTouchY());
 
         hero.turnOnAngle(-angleView.getTouchY(), angleView.getTouchX());
+
         if (System.currentTimeMillis() - lastShootTime > SHOOT_DELAY) {
             if (bullets.size() > 15)
                 bullets.remove(0);
@@ -112,12 +112,20 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             lastShootTime = System.currentTimeMillis();
         }
 
-        hero.draw(canvas);
+        if (System.currentTimeMillis() - monstersAppearingTime > MONSTERS_APPEARING_DELAY && monsters.size() <= 5) {
+            monsters.add(Zombie.generate(getContext()));
+            monstersAppearingTime = System.currentTimeMillis();
+        }
 
         Iterator<Monster> monsterIterator = monsters.iterator();
         while (monsterIterator.hasNext()) {
             Monster monster = monsterIterator.next();
             monster.calculateStep(hero.getPosition());
+
+            if(monster.isAbleToBeat(hero.getPosition())) {
+                hero.damageWithCost(monster.beat());
+            }
+
             drawActor(monster, canvas);
             if(monster.isDead()){
                 monsterIterator.remove();
@@ -130,10 +138,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 //            drawActor(monster, canvas);
 //        }
 
-        for (Bullet bullet : bullets) {
-            bullet.draw(canvas);
-        }
+        if(hero.isDead()) {
+            mainThread.setRunning(false);
+            killThread();
+        } else {
+            hero.draw(canvas);
 
+            for (Bullet bullet : bullets) {
+                bullet.draw(canvas);
+            }
+        }
     }
 
     private void drawActor(Actor actor, Canvas canvas) {
