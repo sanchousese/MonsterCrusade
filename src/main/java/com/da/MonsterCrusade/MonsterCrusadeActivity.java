@@ -13,7 +13,7 @@ public class MonsterCrusadeActivity extends Activity {
 
     private static final String TAG = MonsterCrusadeActivity.class.getSimpleName();
 
-    private SurfaceView surfaceView;
+    private MainGamePanel surfaceView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,19 +23,18 @@ public class MonsterCrusadeActivity extends Activity {
         setContentView(R.layout.main);
         MainGamePanel.joystickView = (JoystickView) findViewById(R.id.moveView);
         MainGamePanel.angleView = (JoystickView) findViewById(R.id.angleView);
-        surfaceView = (SurfaceView) findViewById(R.id.screenFragment);
+        surfaceView = (MainGamePanel) findViewById(R.id.screenFragment);
         Log.d(TAG, "View added");
     }
 
     @Override
-    protected void onDestroy() {
-        Log.d(TAG, "Destroy...");
-        super.onDestroy();
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
-    protected void onStop() {
-        Log.d(TAG, "Stopping...");
-        super.onStop();
+    protected void onPause() {
+        surfaceView.killThread();
+        super.onPause();
     }
 }
