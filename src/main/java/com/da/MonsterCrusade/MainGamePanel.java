@@ -9,7 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.da.MonsterCrusade.bullets.Bullet;
 import com.da.MonsterCrusade.controls.JoystickView;
-import com.da.MonsterCrusade.entities.Hero;
+import com.da.MonsterCrusade.actors.Hero;
 import com.da.MonsterCrusade.utils.DisplayInfo;
 
 import java.util.LinkedList;

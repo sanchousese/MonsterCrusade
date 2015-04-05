@@ -1,25 +1,24 @@
-package com.da.MonsterCrusade.entities;
+package com.da.MonsterCrusade.actors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.*;
 import android.util.Log;
 import com.da.MonsterCrusade.R;
 import com.da.MonsterCrusade.bullets.Bullet;
 import com.da.MonsterCrusade.bullets.Fireball;
-import com.da.MonsterCrusade.entities.components.Speed;
 import com.da.MonsterCrusade.utils.BitmapTransformer;
 
 /**
  * Created by sancho on 04.04.15.
  */
-public class Hero {
+public class Hero{
     private static final String TAG = Hero.class.getSimpleName();
     private final static int IMAGE_SIZE = 50;
 
     private final Bitmap IMAGE;
     private int x;
     private int y;
-    private boolean touched;
     private double speed;
     private double angle;
     private Context context;
@@ -39,14 +38,11 @@ public class Hero {
         canvas.drawBitmap(IMAGE, x - (IMAGE.getWidth() / 2), y - (IMAGE.getHeight() / 2), null);
     }
 
+
     public Bullet shoot() {
         return new Fireball(new Point(x, y), angle, context);
     }
 
-//    public void handleActionDown(int eventX, int eventY) {
-//        setTouched(eventX >= (x - IMAGE.getWidth() / 2) && (eventX <= (x + IMAGE.getWidth() / 2)) &&
-//                eventY >= (y - IMAGE.getHeight() / 2) && (eventY <= (y + IMAGE.getHeight() / 2)));
-//    }
 
     public void goWithCost(double costX, double costY) {
         x += costX * speed;
