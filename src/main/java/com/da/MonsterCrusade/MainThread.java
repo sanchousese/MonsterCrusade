@@ -5,46 +5,42 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-/**
- * Created by sancho on 04.04.15.
- */
-public class MainThread extends Thread {
+class MainThread extends Thread{
+    private boolean runFlag = false;
+    private SurfaceHolder surfaceHolder;
+    private MainGamePanel mainPanel;
 
-    private static final String TAG = MainThread.class.getSimpleName();
 
     private static final int MAX_FPS = 20;
     private static final int MAX_FRAMES_SKIPS = 5;
     private static final int FRAME_PERIOD = 1000 / MAX_FPS;
 
-    private SurfaceHolder surfaceHolder;
-    private MainGamePanel gamePanel;
-    private static boolean running;
-
-    public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
-        super();
+    public MainThread(SurfaceHolder surfaceHolder, MainGamePanel mainPanel){
         this.surfaceHolder = surfaceHolder;
-        this.gamePanel = gamePanel;
+        this.mainPanel = mainPanel;
     }
 
-    @SuppressLint("WrongCall")
-    @Override
+    public void setRunning(boolean run) {
+        runFlag = run;
+    }
+
     public void run() {
         Canvas canvas;
-        Log.d(TAG, "Starting game loop");
 
         long beginTime;
         long timeDiff;
         int sleepTime = 0;
         int frameSkipped;
 
-        while (running) {
+        while (runFlag) {
             canvas = null;
             try {
-                canvas = surfaceHolder.lockCanvas();
+                canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     beginTime = System.currentTimeMillis();
                     frameSkipped = 0;
-                    gamePanel.onDraw(canvas);
+
+                    mainPanel.onDraw(canvas);
 
                     timeDiff = System.currentTimeMillis() - beginTime;
                     sleepTime = (int) (FRAME_PERIOD - timeDiff);
@@ -60,15 +56,12 @@ public class MainThread extends Thread {
                         frameSkipped++;
                     }
                 }
-            } finally {
+            }
+            finally {
                 if (canvas != null) {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
         }
-    }
-
-    public static void setRunning(boolean running) {
-        MainThread.running = running;
     }
 }

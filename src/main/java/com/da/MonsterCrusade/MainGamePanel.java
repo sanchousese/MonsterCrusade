@@ -20,9 +20,9 @@ import java.util.LinkedList;
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = MainGamePanel.class.getSimpleName();
-    private Hero hero;
-
     private MainThread mainThread;
+
+    private Hero hero;
     public static JoystickView joystickView;
     public static JoystickView angleView;
     private Point screenSize;
@@ -39,8 +39,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private void initialize() {
         getHolder().addCallback(this);
         hero = new Hero(DisplayInfo.getSize(getContext()).x / 2, DisplayInfo.getSize(getContext()).y / 2, 0, getContext());
-        mainThread = new MainThread(getHolder(), this);
-
         screenSize = DisplayInfo.getSize(getContext());
         setFocusable(true);
         bullets = new LinkedList<Bullet>();
@@ -48,12 +46,18 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        if (!mainThread.isAlive()) {
-            mainThread = new MainThread(getHolder(), this);
-        }
+        resume();
+    }
 
-        mainThread.setRunning(true);
-        mainThread.start();
+    public void resume() {
+        if (mainThread == null || mainThread.getState() == Thread.State.TERMINATED) {
+            mainThread = new MainThread(getHolder(), this);
+            mainThread.setRunning(true);
+            mainThread.start();
+        } else {
+            mainThread.setRunning(true);
+            mainThread.start();
+        }
     }
 
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
@@ -66,14 +70,18 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void killThread() {
-        while (true) {
-            try {
-                mainThread.join();
-                break;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (mainThread != null) {
+            boolean retry = true;
+            mainThread.setRunning(false);
+            while (retry) {
+                try {
+                    mainThread.join();
+                    retry = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+            }
         }
     }
 
@@ -83,8 +91,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    public void onDraw(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
         hero.goWithCost(joystickView.getTouchX(), joystickView.getTouchY());
         hero.turnOnAngle(-angleView.getTouchY(), angleView.getTouchX());
