@@ -1,6 +1,5 @@
 package com.da.MonsterCrusade.actors;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.*;
 import android.util.Log;
@@ -12,13 +11,14 @@ import com.da.MonsterCrusade.utils.BitmapTransformer;
 /**
  * Created by sancho on 04.04.15.
  */
-public class Hero{
+public class Hero {
     private static final String TAG = Hero.class.getSimpleName();
     private final static int IMAGE_SIZE = 50;
 
     private final Bitmap IMAGE;
     private int x;
     private int y;
+    private boolean touched;
     private double speed;
     private double angle;
     private Context context;
@@ -37,7 +37,6 @@ public class Hero{
     public void draw(Canvas canvas) {
         canvas.drawBitmap(IMAGE, x - (IMAGE.getWidth() / 2), y - (IMAGE.getHeight() / 2), null);
     }
-
 
     public Bullet shoot() {
         return new Fireball(new Point(x, y), angle, context);

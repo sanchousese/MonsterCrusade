@@ -10,4 +10,8 @@ import com.da.MonsterCrusade.actors.Actor;
 public interface Bullet {
     void draw(Canvas canvas);
     boolean isIntersection(Actor actor);
+
+    void setPosition(Point position);
+
+    void setAngle(double angle);
 }

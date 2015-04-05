@@ -47,7 +47,16 @@ public class Fireball implements Bullet {
         position.y -=  Math.sin(angle) * SPEED;
     }
 
-    @Override
+
+public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+
+        @Override
     public String toString() {
         return "Fireball{" +
                 "angle=" + angle +
