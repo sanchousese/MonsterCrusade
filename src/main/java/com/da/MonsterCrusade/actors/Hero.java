@@ -16,10 +16,8 @@ public class Hero {
     private final static int IMAGE_SIZE = 50;
 
     private final Bitmap IMAGE;
-    private int x;
-    private int y;
-    private boolean touched;
-    private double speed;
+    private int x, y;
+    private double speed = 1 / 5.0;
     private double angle;
     private Context context;
 
@@ -27,7 +25,6 @@ public class Hero {
         this.x = x;
         this.y = y;
         this.angle = angle;
-        speed = 1 / 5.0;
         this.context = context;
         Bitmap temp = BitmapFactory.decodeResource(context.getResources(), R.drawable.wizard);
         IMAGE = BitmapTransformer.getResizedBitmap(temp, IMAGE_SIZE, IMAGE_SIZE);
@@ -52,7 +49,6 @@ public class Hero {
 
 
     public void turnOnAngle(double y, double x) {
-        Log.d(TAG, "agle: " + angle);
         this.angle = Math.atan2(y, x);
     }
 }

@@ -14,34 +14,11 @@ import com.da.MonsterCrusade.utils.BitmapTransformer;
 /**
  * Created by sancho on 04.04.15.
  */
-public abstract class Actor {
-    protected final static int IMAGE_SIZE = 50;
+public interface Actor {
 
-    protected final Bitmap IMAGE;
-    protected int x;
-    protected int y;
-    protected double speed;
-    protected double angle;
-    protected Context context;
+    void draw(Canvas canvas);
 
-    public Actor(Bitmap IMAGE, int x, int y, double speed, double angle, Context context) {
-        this.IMAGE = IMAGE;
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
-        this.angle = angle;
-        this.context = context;
-    }
+    void attack(Canvas canvas);
 
-    public void draw(Canvas canvas) {
-        canvas.drawBitmap(IMAGE, x - (IMAGE.getWidth() / 2), y - (IMAGE.getHeight() / 2), null);
-    }
-
-    public abstract Bullet attack();
-
-
-    public abstract void goWithCost(double costX, double costY);
-
-
-    public abstract void turnOnAngle(double y, double x);
+    void move();
 }

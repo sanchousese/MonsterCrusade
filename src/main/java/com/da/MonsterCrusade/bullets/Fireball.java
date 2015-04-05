@@ -42,12 +42,12 @@ public class Fireball implements Bullet {
 
     private void nextPosition() {
         Log.d(TAG, toString());
-        position.x +=  Math.cos(angle) * SPEED;
-        position.y -=  Math.sin(angle) * SPEED;
+        position.x += Math.cos(angle) * SPEED;
+        position.y -= Math.sin(angle) * SPEED;
     }
 
 
-public void setPosition(Point position) {
+    public void setPosition(Point position) {
         this.position = position;
     }
 
@@ -55,11 +55,5 @@ public void setPosition(Point position) {
         this.angle = angle;
     }
 
-        @Override
-    public String toString() {
-        return "Fireball{" +
-                "angle=" + angle +
-                ", position=" + position +
-                '}';
-    }
+
 }
