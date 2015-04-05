@@ -75,8 +75,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         super.onDraw(canvas);
         canvas.drawColor(Color.BLACK);
         hero.goWithCost(joystickView.getTouchX(), joystickView.getTouchY());
-        double angle = Math.atan2((double) angleView.getTouchX(), (double) -angleView.getTouchY()) * (180 / Math.PI);
-        hero.turnOnAngle(angle);
+        hero.turnOnAngle(Math.atan2((double)angleView.getTouchX(), (double)angleView.getTouchY()));
         if(System.currentTimeMillis() - lastShootTime > SHOOT_DELAY) {
             bullets.add(hero.shoot());
             lastShootTime = System.currentTimeMillis();
