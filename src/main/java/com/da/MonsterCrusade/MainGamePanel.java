@@ -110,17 +110,24 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             lastShootTime = System.currentTimeMillis();
         }
 
-        hero.draw(canvas);
-
         for (Monster monster : monsters) {
             monster.calculateStep(hero.getPosition());
+
+            if(monster.isAbleToBeat(hero.getPosition())) {
+                hero.damageWithCost(monster.beat());
+            }
             ((Actor)monster).draw(canvas);
         }
 
-        for (Bullet bullet : bullets) {
-            bullet.draw(canvas);
-        }
+        if(!hero.isDead()) {
+            for (Bullet bullet : bullets) {
+                bullet.draw(canvas);
+            }
 
+            hero.draw(canvas);
+        } else {
+            mainThread.setRunning(false);
+        }
     }
 
 }

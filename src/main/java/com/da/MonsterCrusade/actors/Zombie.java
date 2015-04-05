@@ -25,7 +25,7 @@ public class Zombie implements Actor, Monster {
     private Point position;
     private double angle;
     private Weapon weapon;
-    private double speed = 10.0;
+    private double speed = Math.random() * 10;
     private int health;
 
     public Zombie(Point position, double angle, Context context) {
@@ -83,7 +83,6 @@ public class Zombie implements Actor, Monster {
     }
 
     public static Zombie generate(Context context) {
-//        return new Zombie(new Point((int)(Math.random() * DisplayInfo.getSize(context).x), (int) (Math.random() * DisplayInfo.getSize(context).y)), 0, context);
-        return new Zombie(new Point((int)(DisplayInfo.getSize(context).x / 2.0), (int) (DisplayInfo.getSize(context).y / 2.0)), 0, context);
+        return new Zombie(new Point((int)(Math.random() * DisplayInfo.getSize(context).x), (int) (Math.random() * DisplayInfo.getSize(context).y)), 0, context);
     }
 }
