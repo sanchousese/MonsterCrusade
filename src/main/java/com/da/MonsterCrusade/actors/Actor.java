@@ -16,7 +16,12 @@ import com.da.MonsterCrusade.utils.BitmapTransformer;
  */
 public interface Actor {
     void draw(Canvas canvas);
+
     void damageWithCost(int cost);
+
     boolean isDead();
+
     Point getPosition();
+
+    int getImageSize();
 }

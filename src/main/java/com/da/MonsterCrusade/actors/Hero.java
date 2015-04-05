@@ -40,7 +40,7 @@ public class Hero implements Actor {
     @Override
     public void draw(Canvas canvas) {
         float rotateAngle = (float) (angle * 180 / Math.PI);
-        Bitmap bitmap = BitmapTransformer.rotateBitmap(IMAGE, 180-rotateAngle);
+        Bitmap bitmap = BitmapTransformer.rotateBitmap(IMAGE, 180 - rotateAngle);
         canvas.drawBitmap(bitmap, position.x, position.y, null);
     }
 
@@ -57,6 +57,11 @@ public class Hero implements Actor {
     @Override
     public Point getPosition() {
         return position;
+    }
+
+    @Override
+    public int getImageSize() {
+        return IMAGE_SIZE;
     }
 
     public Bullet shoot() {

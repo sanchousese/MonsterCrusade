@@ -17,6 +17,8 @@ import com.da.MonsterCrusade.actors.Hero;
 import com.da.MonsterCrusade.utils.DisplayInfo;
 import com.da.MonsterCrusade.weapons.HeroWeapon;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -31,8 +33,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static JoystickView joystickView;
     public static JoystickView angleView;
     private Point screenSize;
-    private LinkedList<Bullet> bullets;
-    private LinkedList<Monster> monsters;
+    private ArrayList<Bullet> bullets;
+    private ArrayList<Monster> monsters;
     private static final long SHOOT_DELAY = 300L;
     private long lastShootTime;
 
@@ -44,8 +46,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         hero = new Hero(startHeroPosition, 0, getContext(), new HeroWeapon());
         screenSize = DisplayInfo.getSize(getContext());
         setFocusable(true);
-        bullets = new LinkedList<Bullet>();
-        monsters = new LinkedList<Monster>();
+        bullets = new ArrayList<Bullet>();
+        monsters = new ArrayList<Monster>();
 
         monsters.add(Zombie.generate(context));
         monsters.add(Zombie.generate(context));
@@ -104,30 +106,50 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         hero.turnOnAngle(-angleView.getTouchY(), angleView.getTouchX());
         if (System.currentTimeMillis() - lastShootTime > SHOOT_DELAY) {
-            if (bullets.size() > 5)
-                bullets.removeFirst();
+            if (bullets.size() > 15)
+                bullets.remove(0);
             bullets.add(hero.shoot());
             lastShootTime = System.currentTimeMillis();
         }
 
-        for (Monster monster : monsters) {
+        hero.draw(canvas);
+
+        Iterator<Monster> monsterIterator = monsters.iterator();
+        while (monsterIterator.hasNext()) {
+            Monster monster = monsterIterator.next();
             monster.calculateStep(hero.getPosition());
-
-            if(monster.isAbleToBeat(hero.getPosition())) {
-                hero.damageWithCost(monster.beat());
+            drawActor(monster, canvas);
+            if(monster.isDead()){
+                monsterIterator.remove();
             }
-            ((Actor)monster).draw(canvas);
         }
 
-        if(!hero.isDead()) {
-            for (Bullet bullet : bullets) {
-                bullet.draw(canvas);
-            }
+//        for (Monster monster : monsters) {
+//            monster.calculateStep(hero.getPosition());
+//
+//            drawActor(monster, canvas);
+//        }
 
-            hero.draw(canvas);
-        } else {
-            mainThread.setRunning(false);
+        for (Bullet bullet : bullets) {
+            bullet.draw(canvas);
         }
+
+    }
+
+    private void drawActor(Actor actor, Canvas canvas) {
+        Iterator it = bullets.iterator();
+        while (it.hasNext()){
+            Bullet bullet = (Bullet) it.next();
+            if (bullet.hasIntersection(actor)) {
+                actor.damageWithCost(bullet.getDamage());
+                it.remove();
+                if (actor.isDead()) {
+                    return;
+                }
+            }
+        }
+
+        actor.draw(canvas);
     }
 
 }

@@ -8,7 +8,7 @@ import com.da.MonsterCrusade.bullets.Bullet;
 /**
  * Created by ihorkroosh on 4/5/15.
  */
-public interface Monster {
+public interface Monster extends Actor {
     Bullet shoot(Point position, double angle, Context context);
 
     int beat();
