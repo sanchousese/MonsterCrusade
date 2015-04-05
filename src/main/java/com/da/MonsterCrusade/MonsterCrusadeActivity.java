@@ -24,7 +24,7 @@ public class MonsterCrusadeActivity extends Activity {
         MainGamePanel.joystickView = (JoystickView) findViewById(R.id.moveView);
         MainGamePanel.angleView = (JoystickView) findViewById(R.id.angleView);
         surfaceView = (MainGamePanel) findViewById(R.id.screenFragment);
-        Log.d(TAG, "View added");
+//        Log.d(TAG, "View added");
     }
 
     @Override

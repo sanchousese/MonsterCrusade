@@ -8,10 +8,14 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.da.MonsterCrusade.actors.Actor;
+import com.da.MonsterCrusade.actors.Monster;
+import com.da.MonsterCrusade.actors.Zombie;
 import com.da.MonsterCrusade.bullets.Bullet;
 import com.da.MonsterCrusade.controls.JoystickView;
 import com.da.MonsterCrusade.actors.Hero;
 import com.da.MonsterCrusade.utils.DisplayInfo;
+import com.da.MonsterCrusade.weapons.HeroWeapon;
 
 import java.util.LinkedList;
 
@@ -28,26 +32,25 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static JoystickView angleView;
     private Point screenSize;
     private LinkedList<Bullet> bullets;
+    private LinkedList<Monster> monsters;
     private static final long SHOOT_DELAY = 300L;
     private long lastShootTime;
 
     public MainGamePanel(Context context) {
         super(context);
 
-        initialize();
-    }
-
-    private void initialize() {
         getHolder().addCallback(this);
-        hero = new Hero(DisplayInfo.getSize(getContext()).x / 2, DisplayInfo.getSize(getContext()).y / 2, 0, getContext());
+        Point startHeroPosition = new Point(DisplayInfo.getSize(getContext()).x / 2, DisplayInfo.getSize(getContext()).y / 2);
+        hero = new Hero(startHeroPosition, 0, getContext(), new HeroWeapon());
         screenSize = DisplayInfo.getSize(getContext());
         setFocusable(true);
         bullets = new LinkedList<Bullet>();
-        lastShootTime = System.currentTimeMillis();
-    }
+        monsters = new LinkedList<Monster>();
 
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        resume();
+        monsters.add(Zombie.generate(context));
+        monsters.add(Zombie.generate(context));
+
+        lastShootTime = System.currentTimeMillis();
     }
 
     public void resume() {
@@ -61,34 +64,37 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        resume();
+    }
+
+    @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
 
     }
 
-
+    @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         killThread();
     }
 
     public void killThread() {
-        if (mainThread != null) {
-            boolean retry = true;
-            mainThread.setRunning(false);
-            while (retry) {
-                try {
-                    mainThread.join();
-                    retry = false;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        if (mainThread != null)
+            return;
 
+        boolean retry = true;
+        mainThread.setRunning(false);
+        while (retry) {
+            try {
+                mainThread.join();
+                retry = false;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }
-    }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
+        }
+
     }
 
     @Override
@@ -105,6 +111,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
 
         hero.draw(canvas);
+
+        for (Monster monster : monsters) {
+            monster.calculateStep(hero.getPosition());
+            ((Actor)monster).draw(canvas);
+        }
 
         for (Bullet bullet : bullets) {
             bullet.draw(canvas);

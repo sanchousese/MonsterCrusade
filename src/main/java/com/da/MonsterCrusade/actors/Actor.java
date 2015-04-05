@@ -15,10 +15,8 @@ import com.da.MonsterCrusade.utils.BitmapTransformer;
  * Created by sancho on 04.04.15.
  */
 public interface Actor {
-
     void draw(Canvas canvas);
-
-    void attack(Canvas canvas);
-
-    void move();
+    void damageWithCost(int cost);
+    boolean isDead();
+    Point getPosition();
 }
